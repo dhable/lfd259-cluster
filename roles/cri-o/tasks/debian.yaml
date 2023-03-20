@@ -1,0 +1,33 @@
+- name: Add apt signing key for Kubic
+  ansible.builtin.apt_key:
+    url: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ crio.debian.os }}/Release.key"
+    state: present
+
+- name: Add apt repo for Kubic
+  ansible.builtin.apt_repository:
+    repo: "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ crio.debian.os }}/ /"
+    state: present
+
+- name: Add apt signing key for CRI-O
+  ansible.builtin.apt_key:
+    url: "https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ crio.debian.version }}/{{ crio.debian.os }}/Release.key"
+    state: present
+
+- name : Add apt repo for CRI-O
+  ansible.builtin.apt_repository:
+    repo: "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ crio.debian.version }}/{{ crio.debian.os }}/ /"
+    state: present
+
+- name: Install CRI-O
+  ansible.builtin.apt:
+    pkg:
+      - cri-o
+      - cri-o-runc
+      - cri-tools
+    update_cache: yes
+
+- name: Enable and start CRI-O
+  ansible.builtin.systemd:
+    name: crio.service
+    enabled: yes
+    state: started

@@ -1,0 +1,13 @@
+- name: Install command line tools
+  become: yes
+  ansible.builtin.apt:
+    name: "{{ packages.common + packages.debian }}"
+    state: latest
+    update_cache: yes
+
+- name: Setup hosts file for DNS resolution
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ item }}"
+  loop: "{{ hosts_table }}"
+#####

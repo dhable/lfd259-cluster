@@ -1,0 +1,5 @@
+crio:
+  redhat:
+  debian:
+    version: "1.23"
+    os: xUbuntu_20.04

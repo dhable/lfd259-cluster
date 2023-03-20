@@ -1,0 +1,11 @@
+- name: Copy join command to worker host
+  ansible.builtin.copy:
+    src: ./join-command.sh
+    dest: /tmp/join-command.sh
+    mode: 0777
+
+- name: Join node to existing control plane
+  ansible.builtin.shell: |
+    modprobe overlay
+    modprobe br_netfilter
+    sh /tmp/join-command.sh
